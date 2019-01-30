@@ -10,6 +10,7 @@ SET ( OUTPUT_ELF
         "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
         )
 SET ( SRC_FILES
+        main.cc
         proc_stat.cc
         )
 
