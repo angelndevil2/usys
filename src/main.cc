@@ -1,5 +1,5 @@
-#include <proc_stat.h>
-#include <invalid_string_exception.h>
+#include <proc_stat.hh>
+#include <invalid_string_exception.hh>
 
 using namespace usys;
 

@@ -3,8 +3,8 @@
 #include <time.h>
 #include <string>    // std::string, std::stol
 
-#include <proc_stat.h>
-#include <invalid_string_exception.h>
+#include <proc_stat.hh>
+#include <invalid_string_exception.hh>
 
 namespace usys {
 

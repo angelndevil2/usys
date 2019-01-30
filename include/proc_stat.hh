@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <iostream>
 
-#include <cpu_usage.h>
+#include <cpu_usage.hh>
 
 namespace usys {
 
