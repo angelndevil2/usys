@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <proc_stat.hh>
 #include <invalid_string_exception.hh>
 
@@ -17,7 +18,7 @@ int main()
 
         ps.set_current_cpu_usage();
 
-        std::cout << ps.cpu_sysem(0) << std::endl;
+        std::cout << ps.cpu_percent_usages()[0][3] << std::endl;
         printf("%.2f\n", ps.cpu_idle(0));
 
         return 0;

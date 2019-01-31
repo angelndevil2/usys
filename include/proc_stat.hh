@@ -1,8 +1,6 @@
 #ifndef USYS_PROC_STAT_H
 #define USYS_PROC_STAT_H
 
-
-#include <unistd.h>
 #include <iostream>
 
 #include <cpu_usage.hh>
@@ -11,7 +9,7 @@ namespace usys {
 
 class ProcStat {
     private:
-        struct {
+        struct ProcStats {
             long clock_tick;
             /**
              * time in sec
@@ -86,15 +84,7 @@ class ProcStat {
          */
         float cpu_guest_nice(int ncpu);
 
-        /**
-         * Get kernel clock tick per second
-         */
-        static long kernel_clock_tick();
-
-        /**
-         * find online processor count
-         */
-        static long num_of_cpu();
+        float** const cpu_percent_usages();
 };
 
 } // end of namespace

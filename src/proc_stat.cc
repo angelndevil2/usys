@@ -4,6 +4,7 @@
 #include <string>    // std::string, std::stol
 
 #include <proc_stat.hh>
+#include <kernel_conf.hh>
 #include <invalid_string_exception.hh>
 
 namespace usys {
@@ -11,8 +12,8 @@ namespace usys {
 ProcStat::ProcStat()
 {
 
-    procStats.clock_tick = kernel_clock_tick();
-    long ncpu = num_of_cpu()+1/*plus total*/;
+    procStats.clock_tick = KernelConf::kernel_clock_tick();
+    long ncpu = KernelConf::num_of_cpu() + 1 /*plus total*/;
 
     procStats.percentCpuUsage = new float*[ncpu];
     procStats.prevCpuUsage = new unsigned long*[ncpu];
@@ -28,7 +29,7 @@ ProcStat::ProcStat()
 
 ProcStat::~ProcStat()
 {
-     long ncpu = num_of_cpu()+1;
+    long ncpu = KernelConf::num_of_cpu() + 1;
 
     for (int i = 0; i < ncpu; i++)
     {
@@ -48,18 +49,7 @@ long ProcStat::clock_tick()
 
 float ProcStat::percent_(unsigned long prev, unsigned long cur, unsigned long interval)
 {
-    //printf("%0.2f\n",(cur - prev) * 100. / procStats.clock_tick / interval);
     return (cur - prev) * 100. / procStats.clock_tick / interval;
-}
-
-long ProcStat::kernel_clock_tick()
-{
-    return sysconf(_SC_CLK_TCK);
-}
-
-long ProcStat::num_of_cpu()
-{
-    return sysconf(_SC_NPROCESSORS_ONLN);
 }
 
 void ProcStat::set_current_cpu_usage()
@@ -103,7 +93,7 @@ void ProcStat::set_current_cpu_usage()
             while (std::getline(ss, usage_string, ' ' /*delimiter*/))
             {
                 unsigned long cur_tick = std::stol(usage_string, 0);
-                procStats.percentCpuUsage[cpu_idx][idx] = percent_(procStats.prevCpuUsage[cpu_idx][idx], cur_tick, time_elapsed);
+                procStats.percentCpuUsage[cpu_idx][idx] = cpu_idx == 0 ? percent_(procStats.prevCpuUsage[cpu_idx][idx], cur_tick, time_elapsed) / KernelConf::num_of_cpu() : percent_(procStats.prevCpuUsage[cpu_idx][idx], cur_tick, time_elapsed);
 
                 procStats.prevCpuUsage[cpu_idx][idx++] = cur_tick;
             }
@@ -117,83 +107,48 @@ void ProcStat::set_current_cpu_usage()
 
 float ProcStat::cpu_user(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.user] / num_of_cpu();
-    }
-    return procStats.percentCpuUsage[ncpu][CpuStatPos.user];
+     return procStats.percentCpuUsage[ncpu][CpuStatPos.user];
 }
 float ProcStat::cpu_nice(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.nice] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.nice];
 }
 float ProcStat::cpu_sysem(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.system] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.system];
 }
 float ProcStat::cpu_idle(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.idle] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.idle];
 }
 float ProcStat::cpu_iowait(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.iowait] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.iowait];
 }
 float ProcStat::cpu_irq(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.irq] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.irq];
 }
 float ProcStat::cpu_softirq(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.softirq] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.softirq];
 }
 float ProcStat::cpu_steal(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.steal] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.steal];
 }
 float ProcStat::cpu_guest(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.guest] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.guest];
 }
 float ProcStat::cpu_guest_nice(int ncpu)
 {
-    if (ncpu == 0)
-    {
-        return procStats.percentCpuUsage[ncpu][CpuStatPos.guest_nice] / num_of_cpu();
-    }
     return procStats.percentCpuUsage[ncpu][CpuStatPos.guest_nice];
+}
+
+float ** const ProcStat::cpu_percent_usages()
+{
+    return procStats.percentCpuUsage;
 }
 
 } // end of namespace
