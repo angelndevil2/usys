@@ -1,3 +1,6 @@
+#ifndef USYS_CPU_USAGE_H
+#define USYS_CPU_USAGE_H
+
 namespace usys
 {
 
@@ -52,3 +55,6 @@ union CpuUsage {
 };
 
 } // end of namespace
+
+
+#endif

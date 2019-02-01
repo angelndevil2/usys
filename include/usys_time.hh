@@ -1,5 +1,5 @@
-#ifndef USYS_TIME
-#define USYS_TIME
+#ifndef USYS_TIME_H
+#define USYS_TIME_H
 
 namespace usys {
     #if defined(__WIN32__)

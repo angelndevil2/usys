@@ -1,5 +1,5 @@
-#ifndef USYS_KERNEL_CONF
-#define USYS_KERNEL_CONF
+#ifndef USYS_KERNEL_CONF_H
+#define USYS_KERNEL_CONF_H
 
 namespace usys {
 

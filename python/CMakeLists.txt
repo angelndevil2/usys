@@ -1,12 +1,10 @@
-cmake_minimum_required( VERSION 2.8 )
+cmake_minimum_required( VERSION 3.0 )
 
 find_program(PYTHON "python")
 
 if (PYTHON)
 
-project("usys")
-set ( PROJECT_VERSION_MAJOR 0 )
-set ( PROJECT_VERSION_MINOR 1 )
+project ( "usys" VERSION 0.0.1 )
 
 #set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py")
 #set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")

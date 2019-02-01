@@ -7,6 +7,8 @@
 #include <kernel_conf.hh>
 #include <invalid_string_exception.hh>
 
+using namespace std;
+
 namespace usys {
 
 ProcStat::ProcStat()
@@ -20,8 +22,8 @@ ProcStat::ProcStat()
 
     for (int i = 0; i < ncpu; i++)
     {
-        procStats.percentCpuUsage[i] = new float[10]{0,0,0,0,0,0,0,0,0,0};;
-        procStats.prevCpuUsage[i] = new unsigned long[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        procStats.percentCpuUsage[i] = new float[10];
+        procStats.prevCpuUsage[i] = new unsigned long[10];
     }
 
 }
@@ -33,12 +35,16 @@ ProcStat::~ProcStat()
 
     for (int i = 0; i < ncpu; i++)
     {
-        delete[] procStats.percentCpuUsage[i];
-        delete[] procStats.prevCpuUsage[i];
+        if (procStats.percentCpuUsage[i])
+            delete[] procStats.percentCpuUsage[i];
+        if (procStats.prevCpuUsage[i])
+            delete[] procStats.prevCpuUsage[i];
     }
 
-    delete[] procStats.percentCpuUsage;
-    delete[] procStats.prevCpuUsage;
+    if (procStats.percentCpuUsage)
+        delete[] procStats.percentCpuUsage;
+    if (procStats.prevCpuUsage)
+        delete[] procStats.prevCpuUsage;
 
 }
 
@@ -73,10 +79,8 @@ void ProcStat::set_current_cpu_usage()
     std::string line;
 
     int cpu_idx = 0;
-    while (std::getline(fileStat, line))
+    while (getline(fileStat, line))
     {
-        //float percentUsage[] = procStats.percentCpuUsage[cpu_idx];
-
         // cpu stats line found
         if (!line.compare(0, LEN_STR_CPU, STR_CPU))
         {
@@ -84,18 +88,19 @@ void ProcStat::set_current_cpu_usage()
             size_t pos = line.find(' ');
             if (pos == std::string::npos)
             {
-                throw(InvalidString(std::string("invalid cpu usage string: ")+line));
+                throw(InvalidString(string("invalid cpu usage string: ")+line));
             }
             std::stringstream ss(line.substr(pos+2));
 
             std::string usage_string;
             int idx = 0;
-            while (std::getline(ss, usage_string, ' ' /*delimiter*/))
+            while (getline(ss, usage_string, ' ' /*delimiter*/))
             {
-                unsigned long cur_tick = std::stol(usage_string, 0);
+                unsigned long cur_tick = stol(usage_string, 0);
                 procStats.percentCpuUsage[cpu_idx][idx] = cpu_idx == 0 ? percent_(procStats.prevCpuUsage[cpu_idx][idx], cur_tick, time_elapsed) / KernelConf::num_of_cpu() : percent_(procStats.prevCpuUsage[cpu_idx][idx], cur_tick, time_elapsed);
 
                 procStats.prevCpuUsage[cpu_idx][idx++] = cur_tick;
+
             }
 
             cpu_idx++;
