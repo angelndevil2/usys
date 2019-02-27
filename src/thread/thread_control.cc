@@ -1,6 +1,6 @@
 #include <syslog.h>
 
-#include <thread_control.hh>
+#include "thread_control.hh"
 
 using namespace std;
 namespace usys {

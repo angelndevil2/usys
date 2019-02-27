@@ -3,9 +3,9 @@
 #include <time.h>
 #include <string>    // std::string, std::stol
 
-#include <proc_stat.hh>
-#include <kernel_conf.hh>
-#include <invalid_string_exception.hh>
+#include "proc_stat.hh"
+#include "kernel_conf.hh"
+#include "invalid_string_exception.hh"
 
 using namespace std;
 
@@ -157,5 +157,3 @@ float ** const ProcStat::cpu_percent_usages()
 }
 
 } // end of namespace
-
-using namespace usys;

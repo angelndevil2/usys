@@ -15,6 +15,6 @@ add_custom_command(OUTPUT ${OUTPUT}
                        COMMAND ${PYTHON}
                        ARGS setup.py build)
 
-add_custom_target(target ALL DEPENDS ${OUTPUT})
+add_custom_target(py-wrapper ALL DEPENDS ${OUTPUT})
 
 endif()

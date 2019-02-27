@@ -1,10 +1,8 @@
 #ifndef USYS_PROC_STAT_THREAD_H
 #define USYS_PROC_STAT_THREAD_H
 
-#include <thread>
-
-#include <proc_stat.hh>
-#include <usys_thread.hh>
+#include "proc_stat.hh"
+#include "usys_thread.hh"
 
 namespace usys {
 

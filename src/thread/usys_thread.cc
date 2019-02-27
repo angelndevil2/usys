@@ -1,10 +1,10 @@
-#include <usys_thread.hh>
+#include "usys_thread.hh"
 
 namespace usys {
 
 void UsysThread::start()
 {
-    pthread_create(&(this->thread_), NULL, &UsysThread::run_, (void*)this);
+    pthread_create(&(this->thread_), NULL, &UsysThread::run_, (void *)this);
 }
 
 void UsysThread::join()

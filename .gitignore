@@ -9,3 +9,4 @@ Makefile
 .vscode/
 googletest*/
 lib/
+core.*

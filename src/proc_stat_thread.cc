@@ -1,7 +1,10 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include <proc_stat_thread.hh>
+#include "kernel_conf.hh"
+#include "proc_stat_thread.hh"
+
+using namespace std;
 
 namespace usys {
 
@@ -15,12 +18,23 @@ void ProcStatThread::run()
 
          try
          {
-             this->pstat_.set_current_cpu_usage();
-             syslog(LOG_INFO, "%.2f", this->pstat_.cpu_nice(0));
+            this->pstat_.set_current_cpu_usage();
+            float ** pusage = this->pstat_.cpu_percent_usages();
+            cout << this->pstat_.last_time() << endl;
+            for (int i = 0; i < KernelConf::num_of_cpu(); i++)
+            {
+                printf("%.2f", pusage[i][0]);
+                for (int j = 1; j < 10; j++) {
+                    printf(",%.2f", pusage[i][j]);
+                }
+                cout << endl;
+            }
+
+            cout << endl;
          }
          catch (...)
          {
-             syslog(LOG_ERR, "accquiring cpu usage is fail");
+             syslog(LOG_ERR, "fail to accquire cpu usage");
          }
     }
 }

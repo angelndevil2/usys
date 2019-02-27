@@ -85,6 +85,8 @@ class ProcStat {
         float cpu_guest_nice(int ncpu);
 
         float** const cpu_percent_usages();
+
+        time_t last_time() { return this->procStats.last_time; }
 };
 
 } // end of namespace

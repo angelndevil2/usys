@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <usys_thread.hh>
+#include "usys_thread.hh"
 
 namespace usys {
 

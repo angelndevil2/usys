@@ -1,5 +1,6 @@
 #include <unistd.h>
-#include <kernel_conf.hh>
+
+#include "kernel_conf.hh"
 
 namespace usys {
 
