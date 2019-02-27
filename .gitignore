@@ -10,3 +10,4 @@ Makefile
 googletest*/
 lib/
 core.*
+cpu_stat_data.txt
